@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2842421446348687517}
   - component: {fileID: 8442820978023975546}
   - component: {fileID: 2684737339746257721}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Panda
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5747230031896430901}
   - component: {fileID: 5747230031896430902}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
