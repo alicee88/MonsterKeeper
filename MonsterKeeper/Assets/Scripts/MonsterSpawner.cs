@@ -5,64 +5,66 @@ using UnityEngine;
 public class MonsterSpawner : MonoBehaviour
 {
     [SerializeField] List<GameObject> monsterPrefabs;
-    [SerializeField] int numberToSpawn = 8;
+    [SerializeField] int numberToSpawn = 9;
 
-    private IEnumerator Start()
+    int numCols;
+    int numRows;
+    Vector2 START_GRID_POS = new Vector2(1, 4);
+    List<GameObject> viableMonsters;
+
+    private void Start()
     {
-        int numberSpawned = 0;
-        while (numberSpawned < numberToSpawn)
-        {
-
-            GameObject prefabToSpawn = CalcMonsterToSpawn();
-            if(prefabToSpawn)
-            {
-                Instantiate(prefabToSpawn, transform.position, transform.rotation);
-                numberSpawned++;
-            }
-            else
-            {
-                Debug.Log("MOSTER PREFAB LIST IS EMPTY");
-            }
-
-            yield return new WaitForSeconds(0.5f);
-        }
+        InitializeBoard();
     }
 
-    private GameObject CalcMonsterToSpawn()
+    private void InitializeBoard()
     {
-        List<GameObject> viableMonsterList = new List<GameObject>(monsterPrefabs);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 8f);
-        if(hit.collider)
+        numRows = Mathf.RoundToInt(Mathf.Sqrt(numberToSpawn));
+        numCols = Mathf.RoundToInt(Mathf.Sqrt(numberToSpawn));
+        Vector2 spawnPos = new Vector2(START_GRID_POS.x, START_GRID_POS.y);
+
+        for(int i = 0; i < numRows; i++)
         {
-            // Our empty position is one above what we hit
-            Vector2 emptyPos = new Vector2(transform.position.x, hit.collider.transform.position.y + 1);
-            //Now fire rays to see what monsters to cull from the list
-            RaycastHit2D[] hits = Physics2D.RaycastAll(emptyPos, Vector2.down, 2.5f);
-            
-            if(hits.Length < 2)
+            for (int j = 0; j < numCols; j++)
             {
-                // We're near the bottom of the grid already
-                return monsterPrefabs[Random.Range(0, monsterPrefabs.Count)];
+                spawnPos = new Vector2(START_GRID_POS.x + i, START_GRID_POS.y + j);
+                GameObject spawnPrefab = CalcMonsterToSpawn(spawnPos);
+                Instantiate(spawnPrefab, spawnPos, transform.rotation);
             }
+        }
 
-            // The 2 things below us are the same monster so don't spawn another one of those
+    }
+
+    private void RemoveDuplicateMonster(Vector2 gridPos, Vector2 dir)
+    {
+        //Now fire rays to see what monsters to cull from the list
+        RaycastHit2D[] hits = Physics2D.RaycastAll(gridPos, dir, 2.5f);
+
+        if (hits.Length > 1)
+        {
             if (hits[0].collider.name == hits[1].collider.name)
-            {                
-                foreach(GameObject prefab in viableMonsterList)
+            {
+                foreach (GameObject prefab in viableMonsters)
                 {
-                    if(prefab.GetComponent<Monster>().GetMonsterName() == hits[0].collider.GetComponent<Monster>().GetMonsterName())
+                    if (prefab.GetComponent<Monster>().GetMonsterName() == hits[0].collider.GetComponent<Monster>().GetMonsterName())
                     {
-                        bool removed = viableMonsterList.Remove(prefab);
-
-                        if (removed)
-                        {
-                            return viableMonsterList[Random.Range(0, viableMonsterList.Count)];
-                        }
-
+                        viableMonsters.Remove(prefab);
+                        break;
                     }
                 }
             }
         }
-        return monsterPrefabs[Random.Range(0, monsterPrefabs.Count)];
+    }
+
+    private GameObject CalcMonsterToSpawn(Vector2 gridPos)
+    {
+        viableMonsters = new List<GameObject>(monsterPrefabs);
+
+        //Now fire rays to see what monsters to cull from the list
+        RemoveDuplicateMonster(gridPos, Vector2.down);
+        RemoveDuplicateMonster(gridPos, Vector2.left);
+        RemoveDuplicateMonster(gridPos, Vector2.right);
+       
+        return viableMonsters[Random.Range(0, viableMonsters.Count)];
     }
 }

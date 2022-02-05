@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
-    [SerializeField] GameObject pandaPrefab;
-    [SerializeField] GameObject monkeyPrefab;
     const int gridDims = 8;
-    bool gameStarted = false;
     GameObject firstMonsterSelected;
 
     List<GameObject> monstersOnBoard = new List<GameObject>();
 
     // Start is called before the first frame update
-    IEnumerator Start()
+    private void Start()
     {
-        AddTestMonsters();
-        while (!gameStarted)
-        {
-            yield return new WaitForSeconds(1.0f);
-            gameStarted = true;
-        }
+        
         
     }
 
@@ -28,24 +20,6 @@ public class BoardController : MonoBehaviour
     void Update()
     {
         //CheckForLine();
-    }
-
-    private void AddTestMonsters()
-    {
-        Vector2 pos = transform.position;
-        monstersOnBoard.Add(Instantiate(pandaPrefab, new Vector2(1, 4), transform.rotation));
-        monstersOnBoard.Add(Instantiate(pandaPrefab, new Vector2(1, 5), transform.rotation));
-        monstersOnBoard.Add(Instantiate(pandaPrefab, new Vector2(1, 6), transform.rotation));
-        monstersOnBoard.Add(Instantiate(monkeyPrefab, new Vector2(1, 7), transform.rotation));
-        monstersOnBoard.Add(Instantiate(pandaPrefab, new Vector2(1, 8), transform.rotation));
-        monstersOnBoard.Add(Instantiate(monkeyPrefab, new Vector2(1, 9), transform.rotation));
-        monstersOnBoard.Add(Instantiate(pandaPrefab, new Vector2(1, 10), transform.rotation));
-        monstersOnBoard.Add(Instantiate(monkeyPrefab, new Vector2(1, 11), transform.rotation));
-    }
-
-    public bool GameStarted()
-    {
-        return gameStarted;
     }
 
     public void SelectedAMonster(GameObject monster)
@@ -62,14 +36,20 @@ public class BoardController : MonoBehaviour
             if(hitDirection != new Vector2(0,0))
             {
                 Vector2 firstMonsterPos = firstMonsterSelected.transform.position;
+                firstMonsterSelected.GetComponent<Monster>().SetTargetDirectionAndPosition(monster.transform.position);
 
-                //firstMonsterSelected.transform.position = monster.transform.position;
-                //monster.transform.position = firstMonsterPos;
-                firstMonsterSelected.GetComponent<Monster>().SetTargetDirectionAndPosition(monster.transform.position, hitDirection);
-                monster.GetComponent<Monster>().SetTargetDirectionAndPosition(firstMonsterSelected.transform.position, -hitDirection);
+                monster.GetComponent<Monster>().SetTargetDirectionAndPosition(firstMonsterSelected.transform.position);
                 firstMonsterSelected.GetComponent<Monster>().StopPlayingSelectedAnimation();
+                firstMonsterSelected = null;
+
             }
-            
+            else
+            {
+                Debug.Log("Monsters aren't adjacent");
+                firstMonsterSelected.GetComponent<Monster>().StopPlayingSelectedAnimation();
+                firstMonsterSelected = monster;
+                monster.GetComponent<Monster>().PlaySelectedAnimation();
+            }
         }
     }
 

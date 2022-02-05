@@ -7,10 +7,10 @@ public class Monster : MonoBehaviour
     [SerializeField] string monsterName;
     Animator anim;
     BoardController boardController;
-    public ContactFilter2D filter;
     bool isSelected = false;
     Vector3 targetPos;
-    Vector2 targetDir;
+    bool isMoving = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -19,12 +19,20 @@ public class Monster : MonoBehaviour
         boardController = FindObjectOfType<BoardController>();
 
         StartCoroutine(Blink());
-        StartCoroutine(Fall());
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isMoving)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, 3.0f * Time.deltaTime);
+
+            if (Vector2.Distance(transform.position, targetPos) <= 0)
+            {
+                isMoving = false;
+            }
+        }
     }
 
     IEnumerator Blink()
@@ -53,29 +61,15 @@ public class Monster : MonoBehaviour
         }
     }
 
-    public void SetTargetDirectionAndPosition(Vector3 pos, Vector2 dir)
+    public void SetTargetDirectionAndPosition(Vector3 pos)
     {
         Debug.Log("SETTING TARGET POSITION " + pos + "for " + gameObject.name);
         targetPos = pos;
-        targetDir = dir;
+        isMoving = true;
     }
 
     public void PlaySelectedAnimation()
     {
-        // Make the objects up and down from the selected monster not jiggle
-        RaycastHit2D hitUp = Physics2D.Raycast(transform.position, Vector2.up);
-
-        if (hitUp.collider && hitUp.collider.GetComponent<Rigidbody2D>())
-        {
-            hitUp.collider.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
-        }
-
-        RaycastHit2D hitDown = Physics2D.Raycast(transform.position, Vector2.down);
-
-        if (hitDown.collider && hitDown.collider.GetComponent<Rigidbody2D>())
-        {
-            hitDown.collider.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePosition;
-        }
         GetComponent<Animator>().SetBool("isSelected", true);
     }
 
@@ -93,13 +87,6 @@ public class Monster : MonoBehaviour
         }
         isSelected = true;
 
-    }
-
-    private void CheckForLine()
-    {
-        // Look up
-        RaycastHit2D[] hits = new RaycastHit2D[8];
-        int objectsHit = Physics2D.Raycast(transform.position, Vector2.up, filter, hits);
     }
 
     public string GetMonsterName()

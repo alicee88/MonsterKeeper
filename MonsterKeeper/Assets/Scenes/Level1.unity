@@ -316,51 +316,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341090692}
   m_CullTransparentMesh: 1
---- !u!1 &507033757
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 507033759}
-  - component: {fileID: 507033758}
-  m_Layer: 0
-  m_Name: MonsterSpawner (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &507033758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507033757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1155bd2ccc311b4f9d3875fbba90e63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterPrefabs: []
-  numberToSpawn: 8
---- !u!4 &507033759
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507033757}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 11, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +485,7 @@ GameObject:
   - component: {fileID: 645480042}
   - component: {fileID: 645480041}
   m_Layer: 0
-  m_Name: MonsterSpawner (1)
+  m_Name: MonsterSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -551,7 +506,7 @@ MonoBehaviour:
   monsterPrefabs:
   - {fileID: 3262927982026301850, guid: e9fc220028713544dbfd7d1aec8502aa, type: 3}
   - {fileID: 6159444257677137897, guid: 8b6c0e3e730cb694685f4231ccae110c, type: 3}
-  numberToSpawn: 8
+  numberToSpawn: 9
 --- !u!4 &645480042
 Transform:
   m_ObjectHideFlags: 0
@@ -621,7 +576,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &913396542
 GameObject:
@@ -725,7 +680,7 @@ RectTransform:
   m_AnchoredPosition: {x: 4.5, y: 6.5}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &922250336
+--- !u!1 &1602246927
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -733,42 +688,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 922250338}
-  - component: {fileID: 922250337}
+  - component: {fileID: 1602246929}
+  - component: {fileID: 1602246928}
   m_Layer: 0
-  m_Name: MonsterSpawner (2)
+  m_Name: BoardController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &922250337
+  m_IsActive: 1
+--- !u!114 &1602246928
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922250336}
+  m_GameObject: {fileID: 1602246927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1155bd2ccc311b4f9d3875fbba90e63, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cc4117ec2cb23346a501aa890ccdf47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterPrefabs: []
-  numberToSpawn: 8
---- !u!4 &922250338
+--- !u!4 &1602246929
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922250336}
+  m_GameObject: {fileID: 1602246927}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 11, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1702117357
 GameObject:
