@@ -7,7 +7,6 @@ public class Monster : MonoBehaviour
     [SerializeField] string monsterName;
     Animator anim;
     BoardController boardController;
-    bool isSelected = false;
     Vector3 targetPos;
     bool isMoving = false;
 
@@ -76,17 +75,13 @@ public class Monster : MonoBehaviour
     public void StopPlayingSelectedAnimation()
     {
         GetComponent<Animator>().SetBool("isSelected", false);
-        isSelected = false;
     }
 
     private void OnMouseDown()
     {
-        if (!isSelected)
-        {
-            boardController.SelectedAMonster(gameObject);
-        }
-        isSelected = true;
-
+        
+        boardController.SelectedAMonster(gameObject);
+    
     }
 
     public string GetMonsterName()

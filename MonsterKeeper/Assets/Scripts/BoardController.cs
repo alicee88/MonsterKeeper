@@ -26,22 +26,19 @@ public class BoardController : MonoBehaviour
     {
         if(!firstMonsterSelected)
         {
+            Debug.Log("No first monster selected - make " + monster.name + " first selected");
             firstMonsterSelected = monster;
             monster.GetComponent<Monster>().PlaySelectedAnimation();
         }
         else if(firstMonsterSelected != monster)
         {
+            Debug.Log("Already got a first monster selected (" + firstMonsterSelected.name + ")");
             Vector2 hitDirection = MonstersAreAdjacent(firstMonsterSelected, monster);
 
             if(hitDirection != new Vector2(0,0))
             {
-                Vector2 firstMonsterPos = firstMonsterSelected.transform.position;
-                firstMonsterSelected.GetComponent<Monster>().SetTargetDirectionAndPosition(monster.transform.position);
 
-                monster.GetComponent<Monster>().SetTargetDirectionAndPosition(firstMonsterSelected.transform.position);
-                firstMonsterSelected.GetComponent<Monster>().StopPlayingSelectedAnimation();
-                firstMonsterSelected = null;
-
+                SwapMonsterWithFirstSelected(monster);
             }
             else
             {
@@ -51,6 +48,17 @@ public class BoardController : MonoBehaviour
                 monster.GetComponent<Monster>().PlaySelectedAnimation();
             }
         }
+    }
+
+    private void SwapMonsterWithFirstSelected(GameObject monster)
+    {
+        Debug.Log("Got 2 adjacent monsters. First: " + firstMonsterSelected.name + " Second: " + monster.name);
+        Vector2 firstMonsterPos = firstMonsterSelected.transform.position;
+        firstMonsterSelected.GetComponent<Monster>().SetTargetDirectionAndPosition(monster.transform.position);
+
+        monster.GetComponent<Monster>().SetTargetDirectionAndPosition(firstMonsterSelected.transform.position);
+        firstMonsterSelected.GetComponent<Monster>().StopPlayingSelectedAnimation();
+        firstMonsterSelected = null;
     }
 
     private Vector2 MonstersAreAdjacent(GameObject monster1, GameObject monster2)
