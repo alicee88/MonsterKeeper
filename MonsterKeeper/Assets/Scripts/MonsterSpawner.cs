@@ -9,7 +9,7 @@ public class MonsterSpawner : MonoBehaviour
 
     int numCols;
     int numRows;
-    Vector2 START_GRID_POS = new Vector2(1, 4);
+    Vector2 START_GRID_POS = new Vector2(1, 3);
     List<GameObject> viableMonsters;
 
     private void Start()

@@ -8,18 +8,17 @@ public class BoardController : MonoBehaviour
     GameObject firstMonsterSelected;
 
     List<GameObject> monstersOnBoard = new List<GameObject>();
+    LineChecker[] lineCheckers; 
 
     // Start is called before the first frame update
     private void Start()
     {
-        
-        
+        lineCheckers = FindObjectsOfType<LineChecker>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //CheckForLine();
     }
 
     public void SelectedAMonster(GameObject monster)
@@ -50,11 +49,20 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    public void CheckForLine()
+    {
+        foreach(LineChecker lc in lineCheckers)
+        {
+            lc.CheckForLine();
+        }
+    }
+
     private void SwapMonsterWithFirstSelected(GameObject monster)
     {
         Debug.Log("Got 2 adjacent monsters. First: " + firstMonsterSelected.name + " Second: " + monster.name);
         Vector2 firstMonsterPos = firstMonsterSelected.transform.position;
         firstMonsterSelected.GetComponent<Monster>().SetTargetDirectionAndPosition(monster.transform.position);
+        firstMonsterSelected.GetComponent<Monster>().CheckForLine();
 
         monster.GetComponent<Monster>().SetTargetDirectionAndPosition(firstMonsterSelected.transform.position);
         firstMonsterSelected.GetComponent<Monster>().StopPlayingSelectedAnimation();
@@ -99,93 +107,6 @@ public class BoardController : MonoBehaviour
         return new Vector2(0, 0);
 
     }
-
-    /* private void CheckForLine()
-     {
-         Queue<GameObject> matchingColumnTrio = new Queue<GameObject>();
-         Queue<GameObject> matchingRowTrio = new Queue<GameObject>();
-         int trioRowIndex = 0;
-
-         for (int i = 0; i < gridDims; i++)
-         {
-             if(trioRowIndex < 3)
-             {
-                 //matchingRowTrio.Add(monsters[i])
-             }
-             for (int j = 0; j < gridDims; j++)
-             {
-                 if(matchingColumnTrio.Count < 3)
-                 {
-                     if(monsters[i,j] != null)
-                     {
-                         Debug.Log("ENQUEING MONSTER " + monsters[i, j].name);
-                         matchingColumnTrio.Enqueue(monsters[i, j]);
-
-                     }
-                 }
-                 else
-                 {
-                     if (GotMatchingTrio(matchingColumnTrio))
-                     {
-                         Debug.Log("GOT MATCHING TRIO!");
-                         RemoveTrio(matchingColumnTrio);
-                         matchingColumnTrio.Clear();
-                         Debug.Log("NUMBER OF THINGS IN TRIO " + matchingColumnTrio.Count);
-                     }
-                     else
-                     {
-                         matchingColumnTrio.Dequeue();
-
-                     }
-                 }
-             }
-
-         }
-     }
-
-     private void RemoveTrio(Queue<GameObject> trio)
-     {
-
-         foreach (GameObject monster in trio)
-         {
-
-             for(int j = 0; j < gridDims; j++)
-             {
-                 for(int k = 0; k < gridDims; k++)
-                 {
-                     if(monsters[j, k] == monster)
-                     {
-                         Debug.Log("Got a match for removing from teh array, deleting it now");
-                         monsters[j, k] = null;
-                     }
-                 }
-             }
-             Destroy(monster);
-         }
-     }
-
-     private bool GotMatchingTrio(Queue<GameObject> trio)
-     {
-         if (trio.Count == 3)
-         {
-             Debug.Log("Got 3 in the list, checking for matches");
-             bool gotMatch = true;
-             string lastName = trio.Peek().name;
-             foreach (GameObject monster in trio)
-             {
-                 if (monster.name != lastName)
-                 {
-                     gotMatch = false;
-                 }
-                 lastName = monster.name;
-             }
-             if (gotMatch)
-             {
-                 return true;
-             }
-         }
-         return false;
-     }*/
 
     public void AddMonster(GameObject monster)
     {

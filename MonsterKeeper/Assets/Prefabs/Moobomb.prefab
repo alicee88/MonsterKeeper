@@ -66,20 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterName: Moobomb
-  filter:
-    useTriggers: 0
-    useLayerMask: 1
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 64
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
+  sfxPrefab: {fileID: 8014817479706623121, guid: f4692c0fac5b3fd49bffe2bfa023d72a, type: 3}
 --- !u!61 &9008291844027025946
 BoxCollider2D:
   m_ObjectHideFlags: 0

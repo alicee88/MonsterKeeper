@@ -5,10 +5,13 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [SerializeField] string monsterName;
+    [SerializeField] GameObject sfxPrefab;
+
     Animator anim;
     BoardController boardController;
     Vector3 targetPos;
     bool isMoving = false;
+    bool checkForLine = false;
 
 
     // Start is called before the first frame update
@@ -16,6 +19,7 @@ public class Monster : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         boardController = FindObjectOfType<BoardController>();
+        boardController.AddMonster(gameObject);
 
         StartCoroutine(Blink());
     }
@@ -30,6 +34,11 @@ public class Monster : MonoBehaviour
             if (Vector2.Distance(transform.position, targetPos) <= 0)
             {
                 isMoving = false;
+                if (checkForLine)
+                {
+                    boardController.CheckForLine();
+                    checkForLine = false;
+                }
             }
         }
     }
@@ -43,7 +52,22 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private IEnumerator Fall()
+    public void Die()
+    {
+        Debug.Log("Destroying!");
+        anim.Play("Base Layer.Destroyed");
+        GameObject deathSFX = Instantiate(sfxPrefab, transform.position, transform.rotation);
+        Destroy(deathSFX, 0.75f);
+        Destroy(gameObject, 0.75f);
+    }
+
+
+    public void CheckForLine()
+    {
+        checkForLine = true;
+    }
+
+    /*private IEnumerator Fall()
     {
         while (true)
         {
@@ -58,7 +82,7 @@ public class Monster : MonoBehaviour
             transform.Translate(fallPos);
             yield return null;
         }
-    }
+    }*/
 
     public void SetTargetDirectionAndPosition(Vector3 pos)
     {
