@@ -10,12 +10,17 @@ public class MonsterSpawner : MonoBehaviour
     int numCols;
     int numRows;
     Vector2 START_GRID_POS = new Vector2(1, 3);
+    Vector2 SPAWN_POS = new Vector2(0, 11);
     List<GameObject> viableMonsters;
+    bool isSpawning = false;
+    List<float> spawnXPos = new List<float>();
 
     private void Start()
     {
         InitializeBoard();
     }
+
+    
 
     private void InitializeBoard()
     {
@@ -67,4 +72,32 @@ public class MonsterSpawner : MonoBehaviour
        
         return viableMonsters[Random.Range(0, viableMonsters.Count)];
     }
+
+    public void StartSpawnMonster(float xPos)
+    {
+        spawnXPos.Add(xPos);
+        Debug.Log("Added new spawn pos " + xPos);
+        if (!isSpawning)
+        {
+            Debug.Log("Starting coroutine...");
+            StartCoroutine(SpawnMonster());
+        }
+    }
+
+    IEnumerator SpawnMonster()
+    {
+        isSpawning = true;
+        while(spawnXPos.Count > 0)
+        {
+            Debug.Log("Spawning new monster at " + spawnXPos[0].ToString());
+            Vector2 newSpawnPos = new Vector2(SPAWN_POS.x + spawnXPos[0], SPAWN_POS.y);
+            Instantiate(monsterPrefabs[Random.Range(0, monsterPrefabs.Count)], newSpawnPos, transform.rotation);
+            spawnXPos.RemoveAt(0);
+            yield return new WaitForSeconds(0.5f);
+            isSpawning = false;
+        }
+        
+        Debug.Log("Stopping coroutine");
+    }
+
 }

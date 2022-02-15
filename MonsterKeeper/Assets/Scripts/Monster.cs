@@ -10,9 +10,9 @@ public class Monster : MonoBehaviour
     Animator anim;
     BoardController boardController;
     Vector3 targetPos;
+    MonsterSpawner spawner;
     bool isMoving = false;
     bool checkForLine = false;
-
 
     // Start is called before the first frame update
     void Start()
@@ -20,8 +20,9 @@ public class Monster : MonoBehaviour
         anim = GetComponent<Animator>();
         boardController = FindObjectOfType<BoardController>();
         boardController.AddMonster(gameObject);
-
+        StartCoroutine(Fall());
         StartCoroutine(Blink());
+        spawner = FindObjectOfType<MonsterSpawner>();
     }
 
     // Update is called once per frame
@@ -57,32 +58,41 @@ public class Monster : MonoBehaviour
         Debug.Log("Destroying!");
         anim.Play("Base Layer.Destroyed");
         GameObject deathSFX = Instantiate(sfxPrefab, transform.position, transform.rotation);
-        Destroy(deathSFX, 0.75f);
-        Destroy(gameObject, 0.75f);
+        SpawnReplacementMonster();
+        boardController.RemoveMonster(gameObject);
+        Destroy(deathSFX, 0.5f);
+        Destroy(gameObject, 0.5f);
     }
 
+    private void SpawnReplacementMonster()
+    {
+        spawner.StartSpawnMonster(transform.position.x);
+    }
 
     public void CheckForLine()
     {
         checkForLine = true;
     }
 
-    /*private IEnumerator Fall()
+    private IEnumerator Fall()
     {
         while (true)
         {
             RaycastHit2D hitDown = Physics2D.Raycast(transform.position, Vector2.down, 0.5f);
-            if(hitDown.collider)
+            if (hitDown.collider)
             {
                 float yPos = Mathf.Round(transform.position.y);
                 transform.position = new Vector2(transform.position.x, yPos);
-                yield break;
             }
-            Vector2 fallPos = new Vector2(0, -Time.deltaTime * 5f);
-            transform.Translate(fallPos);
+            else
+            {
+                Vector2 fallPos = new Vector2(0, -Time.deltaTime * 5f);
+                transform.Translate(fallPos);
+            }
             yield return null;
+
         }
-    }*/
+    }
 
     public void SetTargetDirectionAndPosition(Vector3 pos)
     {

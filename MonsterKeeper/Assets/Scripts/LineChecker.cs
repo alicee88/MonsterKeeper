@@ -44,7 +44,6 @@ public class LineChecker : MonoBehaviour
 
             foreach(RaycastHit2D hit in hits)
             {
-                Debug.Log("Looking at... " + hit.collider.name);
                 if (firstMonster == null)
                 {
                     firstMonster = hit.collider.gameObject;

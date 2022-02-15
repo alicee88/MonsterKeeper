@@ -112,4 +112,9 @@ public class BoardController : MonoBehaviour
     {
         monstersOnBoard.Add(monster);
     }
+
+    public void RemoveMonster(GameObject monster)
+    {
+        monstersOnBoard.Remove(monster);
+    }
 }
